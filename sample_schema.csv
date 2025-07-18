@@ -1,0 +1,13 @@
+xpath,required/optional,data_type,model1,model2,model3,model4,validation_rules
+/root/person/id,required,integer,personId,userId,entityId,recordId,min:1 max:999999
+/root/person/name/first,required,string,firstName,givenName,do not use,personalName,minLength:1 maxLength:50
+/root/person/name/last,required,string,lastName,familyName,surname,fullName,minLength:1 maxLength:50
+/root/person/email,optional,string,emailAddress,contactEmail,email,primaryEmail,pattern:email format
+/root/person/age,optional,integer,age,yearsOld,do not use,ageInYears,min:0 max:150
+/root/person/address/street,optional,string,streetAddress,addressLine1,street,homeAddress,maxLength:100
+/root/person/address/city,optional,string,city,locality,cityName,location,maxLength:50
+/root/person/address/zipcode,optional,string,zipCode,postalCode,zip,addressCode,pattern:postal code
+/root/person/phone,optional,string,phoneNumber,contactNumber,do not use,primaryPhone,pattern:phone format
+/root/person/active,optional,boolean,isActive,enabled,status,activeStatus,default:true
+/root/person/salary,optional,decimal,salary,compensation,do not use,yearlyIncome,min:0 precision:2
+/root/person/hire_date,optional,date,hireDate,startDate,employmentDate,joinDate,format:YYYY-MM-DD

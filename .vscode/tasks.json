@@ -1,0 +1,57 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Generate Java Models from Sample CSV",
+			"type": "shell",
+			"command": "/Users/jasmynkelly/Desktop/csvToJavaStructure/.venv/bin/python",
+			"args": [
+				"main.py",
+				"sample_schema.csv",
+				"output"
+			],
+			"group": "build",
+			"isBackground": false,
+			"problemMatcher": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		},
+		{
+			"label": "Generate Java Models from Custom CSV",
+			"type": "shell",
+			"command": "/Users/jasmynkelly/Desktop/csvToJavaStructure/.venv/bin/python",
+			"args": [
+				"main.py",
+				"${input:csvFilePath}",
+				"${input:outputDirectory}"
+			],
+			"group": "build",
+			"isBackground": false,
+			"problemMatcher": [],
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared"
+			}
+		}
+	],
+	"inputs": [
+		{
+			"id": "csvFilePath",
+			"description": "Path to the CSV schema file",
+			"default": "sample_schema.csv",
+			"type": "promptString"
+		},
+		{
+			"id": "outputDirectory",
+			"description": "Output directory for generated Java files",
+			"default": "output",
+			"type": "promptString"
+		}
+	]
+}
