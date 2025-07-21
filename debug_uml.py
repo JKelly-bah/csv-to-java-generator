@@ -29,6 +29,35 @@ def debug_csv_parsing(csv_file_path):
         for i, line in enumerate(first_lines, 1):
             print(f"  {i}: {repr(line)}")
         
+        # Check CSV delimiter detection
+        print("\n🔍 CSV Delimiter Detection:")
+        with open(csv_file_path, 'r', encoding='utf-8') as f:
+            sample = f.read(1024)
+            f.seek(0)
+            sniffer = csv.Sniffer()
+            try:
+                delimiter = sniffer.sniff(sample).delimiter
+                print(f"  Detected delimiter: {repr(delimiter)}")
+            except csv.Error as e:
+                print(f"  Could not detect delimiter: {e}")
+                delimiter = ','
+                print(f"  Using default delimiter: {repr(delimiter)}")
+        
+        # Check column headers
+        with open(csv_file_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f, delimiter=delimiter)
+            headers = reader.fieldnames
+            print(f"  Column headers: {headers}")
+            if headers and 'xpath' not in headers:
+                print(f"  ⚠️  WARNING: 'xpath' column not found in headers!")
+                print(f"      Available columns: {list(headers)}")
+                # Check for similar column names
+                similar = [h for h in headers if h and ('xpath' in h.lower() or 'path' in h.lower())]
+                if similar:
+                    print(f"      Similar columns found: {similar}")
+            elif not headers:
+                print(f"  ⚠️  WARNING: Could not read column headers!")
+        
         print("\n" + "─" * 60)
         
         # Test CSV parsing
@@ -45,8 +74,10 @@ def debug_csv_parsing(csv_file_path):
             
             # Test XPath conversion
             xpath = row.get('xpath', '')
-            print(f"  XPath: '{xpath}' (type: {type(xpath).__name__}, len: {len(xpath) if xpath else 0})")
-            if xpath:
+            print(f"  XPath: '{xpath}' (type: {type(xpath).__name__}, len: {len(xpath) if xpath is not None else 0})")
+            
+            # Check if xpath is actually empty or just whitespace
+            if xpath and xpath.strip():
                 field_name = generator._xpath_to_field_name(xpath)
                 print(f"  → Field name: '{field_name}'")
                 if field_name == 'unknownField':
@@ -60,9 +91,16 @@ def debug_csv_parsing(csv_file_path):
                         if '/' in attribute_part:
                             final_part = attribute_part.split('/')[-1]
                             print(f"      Final part after /: '{final_part}'")
+                        else:
+                            print(f"      No / found, using full attribute: '{attribute_part}'")
+                    else:
+                        parts = xpath.split('/')
+                        final_part = parts[-1] if parts else xpath
+                        print(f"      Final part from path: '{final_part}'")
             else:
-                print(f"  → Field name: 'unknownField' (empty or None xpath)")
-                print(f"  ⚠️  WARNING: XPath is empty, None, or missing!")
+                print(f"  → Field name: 'unknownField' (empty, None, or whitespace-only xpath)")
+                print(f"  ⚠️  WARNING: XPath is empty, None, or contains only whitespace!")
+                print(f"      Raw value repr: {repr(xpath)}")
         
         print("\n" + "─" * 60)
         
