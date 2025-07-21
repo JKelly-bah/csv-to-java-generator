@@ -128,13 +128,23 @@ class UMLGenerator:
         if not xpath:
             return "unknownField"
         
-        # Extract the last part of the xpath
-        parts = xpath.split('/')
-        field_name = parts[-1] if parts else xpath
+        # Handle attribute references (e.g., "../../@attribute")
+        if '@' in xpath:
+            # Extract the attribute name after the @ symbol
+            attribute_part = xpath.split('@')[-1]
+            # Remove any trailing brackets or conditions
+            field_name = attribute_part.split('[')[0].strip()
+        else:
+            # Extract the last part of the xpath
+            parts = xpath.split('/')
+            field_name = parts[-1] if parts else xpath
+            # Remove any brackets or array notation
+            field_name = field_name.split('[')[0]
         
-        # Remove any brackets or special characters
-        field_name = field_name.split('[')[0]  # Remove array notation
-        field_name = field_name.replace('@', '')  # Remove attribute symbol
+        # Clean up the field name
+        field_name = field_name.strip()
+        if not field_name:
+            return "unknownField"
         
         # Convert to camelCase
         words = field_name.replace('-', '_').replace('.', '_').split('_')
