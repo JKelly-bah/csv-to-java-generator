@@ -1,0 +1,193 @@
+@startuml CSV Schema Models
+!theme plain
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classBackgroundColor lightblue
+skinparam classHeaderBackgroundColor darkblue
+skinparam classHeaderFontColor white
+
+title CSV Schema - Java Models UML Diagram
+
+class Model1 {
+  - id: integer {field}
+  - first: string {field}
+  - last: string {field}
+  - email: string
+  - age: integer
+  - street: string
+  - city: string
+  - zipcode: string
+  - phone: string
+  - active: boolean
+  - salary: decimal
+  - hireDate: date
+  --
+  + Model1(integer id, string first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
+  --
+  + getId(): integer
+  + setId(integer): void
+  + getFirst(): string
+  + setFirst(string): void
+  + getLast(): string
+  + setLast(string): void
+  + getEmail(): string
+  + setEmail(string): void
+  + getAge(): integer
+  + setAge(integer): void
+  + getStreet(): string
+  + setStreet(string): void
+  + getCity(): string
+  + setCity(string): void
+  + getZipcode(): string
+  + setZipcode(string): void
+  + getPhone(): string
+  + setPhone(string): void
+  + getActive(): boolean
+  + setActive(boolean): void
+  + getSalary(): decimal
+  + setSalary(decimal): void
+  + getHiredate(): date
+  + setHiredate(date): void
+  --
+  + equals(Object): boolean
+  + hashCode(): int
+  + toString(): String
+}
+
+class Model2 {
+  - id: integer {field}
+  - first: string {field}
+  - last: string {field}
+  - email: string
+  - age: integer
+  - street: string
+  - city: string
+  - zipcode: string
+  - phone: string
+  - active: boolean
+  - salary: decimal
+  - hireDate: date
+  --
+  + Model2(integer id, string first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
+  --
+  + getId(): integer
+  + setId(integer): void
+  + getFirst(): string
+  + setFirst(string): void
+  + getLast(): string
+  + setLast(string): void
+  + getEmail(): string
+  + setEmail(string): void
+  + getAge(): integer
+  + setAge(integer): void
+  + getStreet(): string
+  + setStreet(string): void
+  + getCity(): string
+  + setCity(string): void
+  + getZipcode(): string
+  + setZipcode(string): void
+  + getPhone(): string
+  + setPhone(string): void
+  + getActive(): boolean
+  + setActive(boolean): void
+  + getSalary(): decimal
+  + setSalary(decimal): void
+  + getHiredate(): date
+  + setHiredate(date): void
+  --
+  + equals(Object): boolean
+  + hashCode(): int
+  + toString(): String
+}
+
+class Model3 {
+  - id: integer {field}
+  - last: string {field}
+  - email: string
+  - street: string
+  - city: string
+  - zipcode: string
+  - active: boolean
+  - hireDate: date
+  --
+  + Model3(integer id, string last, string email, string street, string city, string zipcode, boolean active, date hireDate)
+  --
+  + getId(): integer
+  + setId(integer): void
+  + getLast(): string
+  + setLast(string): void
+  + getEmail(): string
+  + setEmail(string): void
+  + getStreet(): string
+  + setStreet(string): void
+  + getCity(): string
+  + setCity(string): void
+  + getZipcode(): string
+  + setZipcode(string): void
+  + getActive(): boolean
+  + setActive(boolean): void
+  + getHiredate(): date
+  + setHiredate(date): void
+  --
+  + equals(Object): boolean
+  + hashCode(): int
+  + toString(): String
+}
+
+class Model4 {
+  - id: integer {field}
+  - first: string {field}
+  - last: string {field}
+  - email: string
+  - age: integer
+  - street: string
+  - city: string
+  - zipcode: string
+  - phone: string
+  - active: boolean
+  - salary: decimal
+  - hireDate: date
+  --
+  + Model4(integer id, string first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
+  --
+  + getId(): integer
+  + setId(integer): void
+  + getFirst(): string
+  + setFirst(string): void
+  + getLast(): string
+  + setLast(string): void
+  + getEmail(): string
+  + setEmail(string): void
+  + getAge(): integer
+  + setAge(integer): void
+  + getStreet(): string
+  + setStreet(string): void
+  + getCity(): string
+  + setCity(string): void
+  + getZipcode(): string
+  + setZipcode(string): void
+  + getPhone(): string
+  + setPhone(string): void
+  + getActive(): boolean
+  + setActive(boolean): void
+  + getSalary(): decimal
+  + setSalary(decimal): void
+  + getHiredate(): date
+  + setHiredate(date): void
+  --
+  + equals(Object): boolean
+  + hashCode(): int
+  + toString(): String
+}
+
+Model1 ||--|| Model2 : shares 12 fields
+Model1 ||--|| Model3 : shares 8 fields
+Model1 ||--|| Model4 : shares 12 fields
+Model2 ||--|| Model3 : shares 8 fields
+Model2 ||--|| Model4 : shares 12 fields
+Model3 ||--|| Model4 : shares 8 fields
+
+note top : Generated from CSV Schema
+note bottom : Total Fields: 12
+note bottom : Required: 3, Optional: 9
+@enduml
