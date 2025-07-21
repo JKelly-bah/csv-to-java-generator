@@ -128,12 +128,19 @@ class UMLGenerator:
         if not xpath:
             return "unknownField"
         
-        # Handle attribute references (e.g., "../../@attribute")
+        # Handle attribute references (e.g., "../../@attribute" or "/path/@attr/sub")
         if '@' in xpath:
-            # Extract the attribute name after the @ symbol
+            # Extract everything after the @ symbol
             attribute_part = xpath.split('@')[-1]
             # Remove any trailing brackets or conditions
-            field_name = attribute_part.split('[')[0].strip()
+            attribute_part = attribute_part.split('[')[0].strip()
+            
+            # If there are additional path segments after @, take the last one
+            # e.g., @name/first -> first, @attribute -> attribute
+            if '/' in attribute_part:
+                field_name = attribute_part.split('/')[-1]
+            else:
+                field_name = attribute_part
         else:
             # Extract the last part of the xpath
             parts = xpath.split('/')

@@ -10,7 +10,7 @@ title CSV Schema - Java Models UML Diagram
 
 class Model1 {
   - id: integer {field}
-  - first: string {field}
+  - name/first: string {field}
   - last: string {field}
   - email: string
   - age: integer
@@ -22,12 +22,12 @@ class Model1 {
   - salary: decimal
   - hireDate: date
   --
-  + Model1(integer id, string first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
+  + Model1(integer id, string name/first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
   --
   + getId(): integer
   + setId(integer): void
-  + getFirst(): string
-  + setFirst(string): void
+  + getName/first(): string
+  + setName/first(string): void
   + getLast(): string
   + setLast(string): void
   + getEmail(): string
@@ -56,7 +56,7 @@ class Model1 {
 
 class Model2 {
   - id: integer {field}
-  - first: string {field}
+  - name/first: string {field}
   - last: string {field}
   - email: string
   - age: integer
@@ -68,12 +68,12 @@ class Model2 {
   - salary: decimal
   - hireDate: date
   --
-  + Model2(integer id, string first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
+  + Model2(integer id, string name/first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
   --
   + getId(): integer
   + setId(integer): void
-  + getFirst(): string
-  + setFirst(string): void
+  + getName/first(): string
+  + setName/first(string): void
   + getLast(): string
   + setLast(string): void
   + getEmail(): string
@@ -136,7 +136,7 @@ class Model3 {
 
 class Model4 {
   - id: integer {field}
-  - first: string {field}
+  - name/first: string {field}
   - last: string {field}
   - email: string
   - age: integer
@@ -148,12 +148,12 @@ class Model4 {
   - salary: decimal
   - hireDate: date
   --
-  + Model4(integer id, string first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
+  + Model4(integer id, string name/first, string last, string email, integer age, string street, string city, string zipcode, string phone, boolean active, decimal salary, date hireDate)
   --
   + getId(): integer
   + setId(integer): void
-  + getFirst(): string
-  + setFirst(string): void
+  + getName/first(): string
+  + setName/first(string): void
   + getLast(): string
   + setLast(string): void
   + getEmail(): string

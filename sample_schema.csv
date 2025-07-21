@@ -1,6 +1,6 @@
 xpath,required/optional,data_type,model1,model2,model3,model4,validation_rules
-/root/person/id,required,integer,personId,userId,entityId,recordId,min:1 max:999999
-/root/person/name/first,required,string,firstName,givenName,do not use,personalName,minLength:1 maxLength:50
+/example/person/@id,required,integer,personId,userId,entityId,recordId,min:1 max:999999
+/root/person/@name/first,required,string,firstName,givenName,do not use,personalName,minLength:1 maxLength:50
 /root/person/name/last,required,string,lastName,familyName,surname,fullName,minLength:1 maxLength:50
 /root/person/email,optional,string,emailAddress,contactEmail,email,primaryEmail,pattern:email format
 /root/person/age,optional,integer,age,yearsOld,do not use,ageInYears,min:0 max:150
