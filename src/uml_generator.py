@@ -40,24 +40,109 @@ class UMLGenerator:
     def _parse_csv_file(self, csv_file_path: str) -> List[Dict]:
         """Parse CSV file and return schema data"""
         schema_data = []
+        delimiter = ','  # Initialize with default
         
-        with open(csv_file_path, 'r', encoding='utf-8') as file:
-            # Use csv.Sniffer to detect delimiter
-            sample = file.read(1024)
-            file.seek(0)
-            sniffer = csv.Sniffer()
-            delimiter = sniffer.sniff(sample).delimiter
-            
-            reader = csv.DictReader(file, delimiter=delimiter)
-            for row in reader:
-                # Clean up the row data
-                cleaned_row = {}
-                for key, value in row.items():
-                    cleaned_key = key.strip() if key else key
-                    cleaned_value = value.strip() if value else value
-                    cleaned_row[cleaned_key] = cleaned_value
+        try:
+            # First, read and clean the CSV content
+            with open(csv_file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
                 
-                schema_data.append(cleaned_row)
+                # Clean up problematic quotes while preserving commas
+                # Remove multiple consecutive quotes but keep single quotes if needed
+                import re
+                # Replace 3+ quotes with single quote
+                content = re.sub(r'"{3,}', '"', content)
+                # Replace double quotes that aren't at field boundaries
+                content = re.sub(r'""(?!")', '', content)
+                
+                # Create a StringIO object for csv.DictReader
+                from io import StringIO
+                cleaned_file = StringIO(content)
+                
+                # Use csv.Sniffer to detect delimiter
+                sample = content[:1024]
+                sniffer = csv.Sniffer()
+                
+                try:
+                    delimiter = sniffer.sniff(sample).delimiter
+                    print(f"Auto-detected delimiter: {repr(delimiter)}")
+                except csv.Error:
+                    # Try common delimiters in order of preference
+                    for test_delimiter in [',', ';', '\t', '|']:
+                        if test_delimiter in sample:
+                            delimiter = test_delimiter
+                            print(f"Using delimiter: {repr(delimiter)}")
+                            break
+                    else:
+                        # Fallback to comma if no delimiter found
+                        delimiter = ','
+                        print(f"Using default delimiter: {repr(delimiter)}")
+                
+                # Parse the cleaned content
+                reader = csv.DictReader(
+                    cleaned_file, 
+                    delimiter=delimiter,
+                    quotechar='"',
+                    quoting=csv.QUOTE_MINIMAL,
+                    skipinitialspace=True
+                )
+                
+                for row_num, row in enumerate(reader, start=2):  # Start at 2 since row 1 is headers
+                    # Clean up the row data
+                    cleaned_row = {}
+                    for key, value in row.items():
+                        if key is None:
+                            continue  # Skip None keys from malformed CSV
+                        
+                        # Clean the key and value
+                        cleaned_key = key.strip() if key else key
+                        cleaned_value = value.strip() if value else value
+                        
+                        cleaned_row[cleaned_key] = cleaned_value
+                    
+                    # Only add rows that have an xpath value
+                    if cleaned_row.get('xpath'):
+                        schema_data.append(cleaned_row)
+                    elif any(cleaned_row.values()):  # Row has some data but no xpath
+                        print(f"⚠️  Warning: Row {row_num} has data but missing xpath: {cleaned_row}")
+                        
+        except UnicodeDecodeError:
+            # Try with different encodings if UTF-8 fails
+            for encoding in ['latin1', 'cp1252', 'iso-8859-1']:
+                try:
+                    with open(csv_file_path, 'r', encoding=encoding) as file:
+                        content = file.read()
+                        # Apply same cleaning
+                        import re
+                        content = re.sub(r'"{3,}', '"', content)
+                        content = re.sub(r'""(?!")', '', content)
+                        
+                        from io import StringIO
+                        cleaned_file = StringIO(content)
+                        reader = csv.DictReader(
+                            cleaned_file, 
+                            delimiter=delimiter,
+                            quotechar='"',
+                            quoting=csv.QUOTE_MINIMAL,
+                            skipinitialspace=True
+                        )
+                        schema_data = []
+                        for row in reader:
+                            cleaned_row = {}
+                            for key, value in row.items():
+                                if key is None:
+                                    continue
+                                cleaned_key = key.strip() if key else key
+                                cleaned_value = value.strip() if value else value
+                                cleaned_row[cleaned_key] = cleaned_value
+                            
+                            if cleaned_row.get('xpath'):
+                                schema_data.append(cleaned_row)
+                        break
+                except UnicodeDecodeError:
+                    continue
+            else:
+                raise Exception("Could not decode CSV file with any common encoding")
         
         return schema_data
     
@@ -116,12 +201,38 @@ class UMLGenerator:
             # Convert xpath to field name
             field_name = self._xpath_to_field_name(xpath)
             
-            # Map to Java type
-            java_type = self.java_type_mapping.get(data_type, data_type)
+            # Parse data type and handle constraints like "String [0,17]"
+            java_type = self._parse_data_type(data_type)
             
             fields.append((field_name, java_type, required))
         
         return fields
+    
+    def _parse_data_type(self, data_type: str) -> str:
+        """Parse data type and handle constraints"""
+        if not data_type:
+            return 'String'
+        
+        data_type = data_type.strip()
+        
+        # Handle types with constraints like "String [0,17]"
+        if '[' in data_type and ']' in data_type:
+            # Extract base type before the bracket
+            base_type = data_type.split('[')[0].strip()
+            constraint = data_type.split('[')[1].split(']')[0].strip()
+            
+            # Map base type to Java type
+            java_base_type = self.java_type_mapping.get(base_type, base_type)
+            
+            # For UML, we can show the constraint as additional info
+            # Option 1: Just return base type
+            # return java_base_type
+            
+            # Option 2: Include constraint in type (for UML documentation)
+            return f"{java_base_type} [{constraint}]"
+        else:
+            # No constraints, just map the type
+            return self.java_type_mapping.get(data_type, data_type)
     
     def _xpath_to_field_name(self, xpath: str) -> str:
         """Convert XPath to Java field name"""

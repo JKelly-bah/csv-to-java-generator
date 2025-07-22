@@ -76,6 +76,15 @@ def debug_csv_parsing(csv_file_path):
             xpath = row.get('xpath', '')
             print(f"  XPath: '{xpath}' (type: {type(xpath).__name__}, len: {len(xpath) if xpath is not None else 0})")
             
+            # DEBUG: Let's check all possible column names that might contain the XPath
+            print("  🔍 DEBUGGING column names:")
+            for key, value in row.items():
+                if value and ('/' in str(value) or '@' in str(value)):  # Looks like an XPath
+                    print(f"      Column '{key}' (len={len(key)}, repr={repr(key)}): '{value}'")
+                    # Try using this value for field name conversion
+                    test_field_name = generator._xpath_to_field_name(str(value))
+                    print(f"      → Would convert to: '{test_field_name}'")
+            
             # Check if xpath is actually empty or just whitespace
             if xpath and xpath.strip():
                 field_name = generator._xpath_to_field_name(xpath)
