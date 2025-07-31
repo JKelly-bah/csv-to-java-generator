@@ -59,6 +59,15 @@ By default, IntelliJ shows coverage as colored squares in the gutter (left margi
    - **Partial**: Lines that are partially covered (like branches where only some conditions were tested)
    - **Uncovered**: Lines that were not executed by any tests
 
+   **Line Coverage Options Explained:**
+   - **Foreground**: Sets the color of the text for covered, partially covered, or uncovered lines. If selected, the text will be colored according to your choice.
+   - **Background**: Sets the background color for the entire line. Selecting this will highlight the whole line, making coverage more visible.
+   - **Error stripe mark**: Adds a colored mark to the error stripe (scrollbar) for quick navigation and visibility of coverage status.
+   - **Effects**: Adds visual effects to the text, such as underline, bold underscore, wave, border, strikeout, or dotted line. You can choose the effect style from the dropdown menu.
+   - **Bold/Italic**: Makes the text bold or italic for the selected coverage type.
+
+   > Tip: For best readability, use either Foreground or Background, not both. If both are selected, the text may be hard to read due to overlapping colors.
+
    > **Screenshot Placeholder**: Add screenshot showing the Line Coverage color customization options in the Color Scheme settings
 
 #### Step 3: Access Coverage Controls in the Editor
