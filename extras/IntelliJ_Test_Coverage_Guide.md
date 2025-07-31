@@ -96,30 +96,40 @@ After running tests with coverage, you'll see:
 
 **[Screenshot Placeholder: Settings/Preferences dialog with Editor > General > Code Coverage section highlighted in the left panel]**
 
-#### Step 2: Configure Coverage Highlighting
-In the Code Coverage settings, you'll find:
-
-1. **"Show coverage in gutter"** - Controls gutter indicators
-2. **"Highlight lines"** - Controls line highlighting
-3. **"Use covered lines color"** - Enables/disables color coding
-
-**Configuration Options:**
-- **Gutter Only**: Check "Show coverage in gutter", uncheck "Highlight lines"
-- **Line Highlighting**: Check "Highlight lines", optionally uncheck "Show coverage in gutter"
-- **Both**: Check both options for maximum visibility
-
-**[Screenshot Placeholder: Code Coverage settings panel showing checkboxes for "Show coverage in gutter" and "Highlight lines" options]**
-
-#### Step 3: Customize Colors (Optional)
+#### Step 2: Customize Coverage Colors and Display
 1. In the same **Code Coverage** settings panel, look for and click the **"Colors"** link/button
-2. This will navigate you to **Editor** → **Color Scheme** → **General** → **Code Coverage** in the settings tree
-3. In this section, you can customize colors for:
-   - **Covered lines/branches**
-   - **Uncovered lines/branches**
-   - **Partially covered lines/branches**
-4. Click on each color box to open the **color picker** and select your preferred colors
+#### Step 2: Customize Coverage Colors and Display
+1. In the same **Code Coverage** settings panel, look for and click the **"Colors"** link/button
+2. This will navigate you to **Editor** → **Color Scheme** → **General** → **Line Coverage** in the settings tree
+3. Expand the **Line Coverage** section to see three coverage states:
+   - **Full** - Fully covered lines
+   - **Partial** - Partially covered lines (e.g., some branches covered)
+   - **Uncovered** - Lines with no coverage
 
-**[Screenshot Placeholder: Color scheme settings showing coverage color options with color pickers for different coverage states]**
+4. Click on each coverage state (Full, Partial, or Uncovered) to customize its appearance:
+
+**Text Style Options:**
+   - **Bold** (checkbox) - Makes the text bold
+   - **Italic** (checkbox) - Makes the text italic
+
+**Color and Visual Effect Options:**
+   - **Foreground** (checkbox + color picker) - Sets the text color
+   - **Background** (checkbox + color picker) - Sets the background color behind the text
+   - **Error Stripe Mark** (checkbox + color picker) - Sets the color of the indicator in the error stripe (right margin)
+   - **Effects** (checkbox + color picker + dropdown) - Adds visual effects to the text:
+     - **Underscored** - Single underline
+     - **Bold Underscored** - Thick underline
+     - **Underwaved** - Wavy underline
+     - **Bordered** - Border around the text
+     - **Strikeout** - Line through the text
+     - **Dotted Line** - Dotted underline
+
+5. Enable each option by checking its checkbox, then click the color box to choose colors
+6. For **Effects**, select the desired effect type from the dropdown menu
+
+> **Note:** The gutter vs. line highlighting behavior is typically controlled by IntelliJ's global coverage settings or through the Coverage tool window options, rather than in these color scheme settings. These settings primarily control the visual appearance (colors and effects) of the coverage indicators.
+
+**[Screenshot Placeholder: Color scheme settings showing Line Coverage options with Full, Partial, and Uncovered expanded, displaying all formatting options including Bold, Italic, Foreground, Background, Error Stripe Mark, and Effects dropdown]**
 
 ### 3b. Understanding Coverage Menu Options
 
