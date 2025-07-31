@@ -68,6 +68,29 @@ By default, IntelliJ shows coverage as colored squares in the gutter (left margi
 
    > Tip: For best readability, use either Foreground or Background, not both. If both are selected, the text may be hard to read due to overlapping colors.
 
+
+Click on each coverage state (Full, Partial, or Uncovered) to customize its appearance:
+
+**Text Style Options:**
+   - **Bold** (checkbox) - Makes the text bold
+   - **Italic** (checkbox) - Makes the text italic
+
+**Color and Visual Effect Options:**
+   - **Foreground** (checkbox + color picker) - Sets the text color
+   - **Background** (checkbox + color picker) - Sets the background color behind the text
+   - **Error Stripe Mark** (checkbox + color picker) - Sets the color of the indicator in the error stripe (right margin)
+   - **Effects** (checkbox + color picker + dropdown) - Adds visual effects to the text:
+     - **Underscored** - Single underline
+     - **Bold Underscored** - Thick underline
+     - **Underwaved** - Wavy underline
+     - **Bordered** - Border around the text
+     - **Strikeout** - Line through the text
+     - **Dotted Line** - Dotted underline
+
+5. Enable each option by checking its checkbox, then click the color box to choose colors
+6. For **Effects**, select the desired effect type from the dropdown menu
+
+
    > **Screenshot Placeholder**: Add screenshot showing the Line Coverage color customization options in the Color Scheme settings
 
 #### Step 3: Access Coverage Controls in the Editor
