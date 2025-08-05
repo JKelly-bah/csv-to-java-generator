@@ -1,0 +1,88 @@
+
+Slide 1:
+I will cover the advantages of GraphQL over REST, walk through the payment lifecycle and core concepts like payment methods, vault, customers and transactions, explain how to authenticate and call the API, discuss response handling and errors, and highlight advanced features and best practices. 
+
+OR
+
+Welcome to the presentation on Braintree GraphQL. I'm Jasmyn Kelly, and I'll be guiding you through why and how Braintree leverages GraphQL to power its payment API. 
+We'll explore the core concepts, advantages over REST, how to perform multiple operations in a single call, and the tools available to build reliable payment integrations.
+
+Slide 2:
+First I'll give a high‑level overview of Braintree GraphQL and our motivations for using it. We'll discuss why GraphQL offers advantages over REST. Then I'll demonstrate how GraphQL lets us execute multiple mutations in a single request. We'll go over key features of the API and its schema, walk through query examples, cover mutations and subscriptions, and finish with a conclusion and next steps.
+
+
+Slide 3: 
+
+GraphQL uses a single endpoint and models operations as queries to fetch data and mutations to modify data, similar to GET and POST in REST. 
+
+
+Every call (??) is described in a strongly typed schema 
+    so you always know what queries and mutations are available and what they return. 
+    
+Since the schema is part of the API itself, you can introspect it at runtime,
+    - introspection allows you to create query to tell you about the schema
+The schema defines all available types and you can introspect it at runtime. 
+This makes the payment API both self‑documenting and flexible.
+
+
+
+
+
+
+
+Slide 4:
+Why would we choose to use GraphQL over REST?
+On this slide I compare traditional REST calls with GraphQL. 
+
+In REST, retrieving an order, its items and customer details typically requires multiple requests. 
+
+
+
+GraphQL lets clients request exactly the fields they need, supports batching multiple operations in one request, and returns partial successes using a consistent 200 status code with error objects.
+
+
+This reduces network latency and prevents over‑ or under‑fetching of data. 
+
+
+The result is a more efficient client and a cleaner, unified API endpoint.
+
+OR
+
+
+
+ 
+
+
+
+
+Slide 5:
+Getting started with Braintree GraphQL requires a few key steps. First, send your POST requests to a single /graphql endpoint. For sandbox testing use https://payments.sandbox.braintree-api.com/graphql and switch to https://payments.braintree-api.com/graphql in production(developer.paypal.com). A registered Braintree account is required, and you must supply an Authorization header with credentials such as an API key, tokenization key or client token depending on the operation(developer.paypal.com). Include the Braintree-Version header to specify the API version and set Content-Type to application/json(developer.paypal.com). The request body must be a JSON object containing a "query" string and optionally a "variables" object(developer.paypal.com). To verify your setup, you can send a simple ping query. The response will return "pong", confirming that your credentials and headers are correct(developer.paypal.com).
+
+
+
+Slide 6:
+GraphQL also lets us group multiple operations into one request. Here I'm showing an example from the Braintree docs that charges two payment methods in one call(developer.paypal.com). We use aliases – "firstTransaction" and "secondTransaction" – to distinguish the results. Each alias executes the same mutation with different input variables. This single HTTP POST triggers both transactions and returns both results together. Compare this to REST, where you'd need two separate HTTP calls and potentially handle partial success manually. GraphQL streamlines complex workflows into concise, predictable operations.
+
+
+Slide 7:
+This slide highlights the high‑level benefits of Braintree's GraphQL API. First, there's a single endpoint for all operations, which simplifies your integration. Second, queries are precise: you request exactly the fields you need and nothing more. That reduces payload sizes and speeds up your application. Finally, the API is strongly typed, and introspection combined with tools like GraphiQL provides a great developer experience. You can explore the schema, build queries interactively, and rely on type safety when integrating with your payment systems(developer.paypal.com).
+
+
+Slide 8:
+The API’s schema organizes data around a root "Query" type. From the query root you can fetch objects like customers, payment methods and transactions. Each type exposes fields for the relevant information – for example, the PaymentMethod type includes details like expiration date, account email, or Venmo username(developer.paypal.com). 
+
+Because everything is strongly typed, the schema itself serves as your documentation. Tools like introspection queries or the API Explorer can show you available fields at any time(developer.paypal.com). This diagram is a simplified representation of those relationships.
+
+
+
+Slide 9:
+
+
+
+Slide 10:
+
+
+Slide 11:
+
+
+

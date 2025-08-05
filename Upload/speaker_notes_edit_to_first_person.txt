@@ -1,0 +1,111 @@
+Slide1
+Welcome the audience and introduce yourself. Briefly state that this
+presentation will provide a high-level overview of integrating with Braintree
+via GraphQL. Mention that you will cover the advantages of GraphQL over REST,
+walk through the payment lifecycle and core concepts like payment methods,
+vault, customers and transactions, explain how to authenticate and call the API,
+discuss response handling and errors, and highlight advanced features and best
+practices. Set expectations that the talk is aimed at developers who already
+have some familiarity with HTTP and will provide references for further
+exploration.
+Slide2
+Introduce GraphQL and how it differs from REST. GraphQL uses a single endpoint
+and models operations as queries to fetch data and mutations to modify data,
+similar to GET and POST in REST【842283118447869†screenshot】. Unlike REST, the
+schema defines all available types and you can introspect it at runtime.
+Highlight that GraphQL lets clients request exactly the fields they need,
+supports batching multiple operations in one request, and returns partial
+successes using a consistent 200 status code with error objects
+【52246793692284†L422-L429】. Contrast this with REST, which uses multiple
+endpoints, HTTP verbs and status codes, and can suffer from over-fetching or
+under-fetching data with no standard introspection.
+Slide3
+Walk through the lifecycle of a typical Braintree transaction. First your server
+requests a client token from Braintree. The client SDK uses this token to
+collect payment details, such as card numbers or PayPal accounts, and returns a
+single-use payment method (nonce)【480115443745776†screenshot】. Your server
+then calls the GraphQL API either to vault the payment method for future use or
+to immediately charge it. Vaulting converts the single-use nonce into a
+multi-use payment method stored in Braintree’s Vault, which never expires
+【605697969352228†screenshot】. When you charge a method, the API creates a
+Transaction object representing the movement of money from your customer to you,
+and the transaction’s status updates through the payment lifecycle
+【518177126341671†screenshot】. Mention that payment methods cover credit cards,
+PayPal, Venmo and other accounts with their own detail fields
+【325636306215838†screenshot】, and that optional Customer objects group payment
+methods and transactions but cannot be shared between customers
+【896418145097215†screenshot】.
+Slide4
+Describe the four ways to authenticate requests. API Keys are generated in the
+Braintree Control Panel; you base64 encode “public:private” and send it in the
+Authorization header as Basic auth【534462899186745†screenshot】. Tokenization
+keys are reduced-privilege publishable values for client tokenization; log into
+the Control Panel, navigate to the API section and scroll to Tokenization Keys
+to generate one if needed【663685599881161†screenshot】【479859515184260†L500-
+L512】. Authorization fingerprints live inside client tokens (JWTs); decode the
+token to get the fingerprint and include it as a Bearer token
+【396198585588492†screenshot】. Access tokens are part of the Braintree Auth
+beta for third-party apps; after an OAuth flow you send the access token as a
+Bearer token【534119928115562†screenshot】. Remind developers to include a
+Braintree-Version header and Content-Type: application/json in every GraphQL
+request【608921783049126†screenshot】, and note that the API always uses POST
+regardless of the operation.
+Slide5
+Explain how to construct an HTTP request to the Braintree GraphQL endpoint. All
+requests, both queries and mutations, are POSTed to a single endpoint—use the
+sandbox for testing and switch to production when going live
+【571035017966946†screenshot】【52246793692284†L168-L188】. Include the
+Authorization header appropriate for your credential, the Braintree-Version
+header with the date you began integrating, and set the Content-Type to
+application/json【108213133886995†screenshot】. The request body is a JSON
+object with a "query" string and, if variables are used, a "variables" JSON
+object. Show a simple ping query and a chargePaymentMethod mutation. Remind
+developers to escape newlines in JSON strings and that GraphQL variables must
+match the schema types【576437811568372†screenshot】. Point out that you can use
+GraphQL aliases to call the same mutation multiple times in one request
+【52246793692284†L414-L417】. Finally, promote the API Explorer/GraphiQL tool
+integrated into the docs—log in with sandbox credentials to explore the schema,
+build queries, and run mutations interactively【52246793692284†L541-L560】.
+Slide6
+Explain how GraphQL responses are structured. Regardless of success or failure,
+the API always returns an HTTP 200 status and a JSON body with up to three
+top-level keys: data, errors and extensions【52246793692284†L422-L429】. The
+data object mirrors the shape of your query and contains the results when
+successful【52246793692284†L433-L436】. RESTful status codes are not used;
+instead, any issues are expressed in an errors array. Each error contains a
+human-readable message, the locations and path where the error occurred, and an
+extensions object with additional metadata such as errorClass and legacyCode
+【52246793692284†L452-L476】【52246793692284†L483-L506】. Calls can have partial
+success where some fields return null and corresponding entries appear in the
+errors array【52246793692284†L509-L516】. The extensions object always includes
+a requestId to help Braintree support troubleshoot requests
+【52246793692284†L518-L522】. Finally, discuss timeouts: transaction requests
+may take up to 60 seconds; if your client times out earlier, the customer may be
+charged even though you did not receive a response【52246793692284†L524-L540】.
+Encourage logging the requestId and handling errors gracefully.
+Slide7
+Discuss the advanced capabilities of the GraphQL API. Demonstrate how to run an
+introspection query (e.g. __schema) to discover the schema and confirm available
+types and fields; this schema is always current【591675993056320†screenshot】.
+Highlight that Braintree's GraphQL API implements the Relay specification, which
+provides node lookup, cursor-based pagination and connections for efficient
+traversals【694088645231751†screenshot】. Explain aliasing—assigning different
+names to the same mutation in a single request—allowing you to charge multiple
+payment methods in one call【52246793692284†L414-L417】. Mention request
+batching for grouping unrelated operations. Encourage developers to take
+advantage of the sandbox environment, API Explorer and test payment methods to
+safely experiment with the API before going live.
+Slide8
+Wrap up the presentation by summarizing the main points. GraphQL gives
+developers a flexible way to interact with Braintree: one endpoint, typed
+operations, exact field selection and the ability to batch multiple operations
+【842283118447869†screenshot】. Braintree models payments using payment methods,
+customers, vault and transactions; understanding these domain concepts is key to
+designing integrations【480115443745776†screenshot】. Emphasize the importance
+of choosing the correct authentication mechanism and including the required
+headers【428510058951871†screenshot】. Encourage robust client implementations
+that handle both successful responses and errors gracefully; remember that all
+responses return HTTP 200 and may contain data and errors【52246793692284†L422-
+L429】. Finally, invite developers to explore the sandbox environment, API
+Explorer and introspection queries to deepen their understanding and iterate on
+their integrations.

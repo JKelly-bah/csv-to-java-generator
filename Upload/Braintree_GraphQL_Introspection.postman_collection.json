@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "Braintree GraphQL Introspection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get All Mutations and Input Object Types",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{BRAINTREE_TOKEN}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Braintree-Version",
+            "value": "2019-01-01",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"query\": \"\\n{\\n  __schema {\\n    mutationType {\\n      fields {\\n        name\\n        args {\\n          name\\n          type {\\n            kind\\n            name\\n            ofType {\\n              kind\\n              name\\n            }\\n          }\\n        }\\n      }\\n    }\\n  }\\n}\\n\"}"
+        },
+        "url": {
+          "raw": "https://payments.sandbox.braintree-api.com/graphql",
+          "protocol": "https",
+          "host": [
+            "payments",
+            "sandbox",
+            "braintree-api",
+            "com"
+          ],
+          "path": [
+            "graphql"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Input Object Fields (Set Variable)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{BRAINTREE_TOKEN}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          },
+          {
+            "key": "Braintree-Version",
+            "value": "2019-01-01",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"query\": \"\\nquery GetInputObjectDetails($name: String!) {\\n  __type(name: $name) {\\n    name\\n    kind\\n    inputFields {\\n      name\\n      type {\\n        kind\\n        name\\n        ofType {\\n          kind\\n          name\\n          ofType {\\n            kind\\n            name\\n          }\\n        }\\n      }\\n    }\\n  }\\n}\\n\", \"variables\": {\"name\": \"ChargePaymentMethodInput\"}}"
+        },
+        "url": {
+          "raw": "https://payments.sandbox.braintree-api.com/graphql",
+          "protocol": "https",
+          "host": [
+            "payments",
+            "sandbox",
+            "braintree-api",
+            "com"
+          ],
+          "path": [
+            "graphql"
+          ]
+        }
+      }
+    }
+  ]
+}
